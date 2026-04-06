@@ -18,16 +18,16 @@ class _InicioAlejaWidgetState extends State<InicioAlejaWidget> {
         setState(() => selectedIndex = index);
         switch (index) {
           case 0:
-            // Ya estamos en inicio, no navegar
+            Navigator.pushNamed(context, '/inicio');
             break;
           case 1:
-            Navigator.pushNamed(context, '/producto');
+            Navigator.pushNamed(context, '/inicio-aleja');
             break;
           case 3:
             Navigator.pushNamed(context, '/saldo');
             break;
           case 4:
-            // Reportes, quizás no navegar o a algo
+            Navigator.pushNamed(context, '/inicio');
             break;
         }
       },
@@ -50,9 +50,11 @@ class _InicioAlejaWidgetState extends State<InicioAlejaWidget> {
   }
 
   Widget _buildCenterNavItem() {
-    final bool isSelected = selectedIndex == 2;
     return GestureDetector(
-      onTap: () => setState(() => selectedIndex = 2),
+      onTap: () {
+        setState(() => selectedIndex = 2);
+        Navigator.pushNamed(context, '/producto');
+      },
       child: Container(
         width: 60,
         height: 60,
@@ -67,11 +69,7 @@ class _InicioAlejaWidgetState extends State<InicioAlejaWidget> {
             ),
           ],
         ),
-        child: Icon(
-          Icons.widgets,
-          color: Colors.white,
-          size: 28,
-        ),
+        child: Icon(Icons.widgets, color: Colors.white, size: 28),
       ),
     );
   }

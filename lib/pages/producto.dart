@@ -31,7 +31,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             Navigator.pushNamed(context, '/inicio');
             break;
           case 1:
-            // Ya estamos en producto, no navegar
+            Navigator.pushNamed(context, '/inicio-aleja');
             break;
           case 3:
             Navigator.pushNamed(context, '/saldo');
@@ -60,9 +60,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   }
 
   Widget _buildCenterNavItem() {
-    final bool isSelected = selectedIndex == 2;
     return GestureDetector(
-      onTap: () => setState(() => selectedIndex = 2),
+      onTap: () {
+        setState(() => selectedIndex = 2);
+        Navigator.pushNamed(context, '/producto');
+      },
       child: Container(
         width: 60,
         height: 60,
@@ -77,11 +79,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ),
           ],
         ),
-        child: Icon(
-          Icons.widgets,
-          color: Colors.white,
-          size: 28,
-        ),
+        child: Icon(Icons.widgets, color: Colors.white, size: 28),
       ),
     );
   }
