@@ -1,8 +1,78 @@
 import 'package:flutter/material.dart';
 
 // ================= HOME =================
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int selectedIndex = 0;
+
+  Widget _buildNavItem(IconData icon, String label, int index) {
+    final bool isSelected = selectedIndex == index;
+    return GestureDetector(
+      onTap: () {
+        setState(() => selectedIndex = index);
+        switch (index) {
+          case 0:
+            Navigator.pushNamed(context, '/inicio');
+            break;
+          case 1:
+            Navigator.pushNamed(context, '/inicio-aleja');
+            break;
+          case 3:
+            Navigator.pushNamed(context, '/saldo');
+            break;
+          case 4:
+            Navigator.pushNamed(context, '/inicio');
+            break;
+        }
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 24, color: isSelected ? Colors.black : Colors.grey),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: isSelected ? Colors.black : Colors.grey,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCenterNavItem() {
+    return GestureDetector(
+      onTap: () {
+        setState(() => selectedIndex = 2);
+        Navigator.pushNamed(context, '/producto');
+      },
+      child: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.12),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Icon(Icons.widgets, color: Colors.white, size: 28),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +80,6 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.grey[100],
 
       body: SafeArea(
-        
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -154,27 +223,32 @@ class HomeScreen extends StatelessWidget {
       ),
 
       // 🔻 BOTTOM NAV
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const DetailsScreen()),
-            );
-          } else if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const ProfileScreen()),
-            );
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Inicio"),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: "Details"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 16,
+              offset: const Offset(0, -3),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        child: SafeArea(
+          top: false,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildNavItem(Icons.home, "Inicio", 0),
+              _buildNavItem(Icons.shopping_bag, "Pedidos", 1),
+              _buildCenterNavItem(),
+              _buildNavItem(Icons.people, "Clientes", 3),
+              _buildNavItem(Icons.bar_chart, "Reportes", 4),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -1,35 +1,109 @@
 import 'package:flutter/material.dart';
 import 'saldo_pendiente.dart';
 
-class InicioAlejaWidget extends StatelessWidget {
+class InicioAlejaWidget extends StatefulWidget {
   const InicioAlejaWidget({super.key});
+
+  @override
+  State<InicioAlejaWidget> createState() => _InicioAlejaWidgetState();
+}
+
+class _InicioAlejaWidgetState extends State<InicioAlejaWidget> {
+  int selectedIndex = 0;
+
+  Widget _buildNavItem(IconData icon, String label, int index) {
+    final bool isSelected = selectedIndex == index;
+    return GestureDetector(
+      onTap: () {
+        setState(() => selectedIndex = index);
+        switch (index) {
+          case 0:
+            Navigator.pushNamed(context, '/inicio');
+            break;
+          case 1:
+            Navigator.pushNamed(context, '/inicio-aleja');
+            break;
+          case 3:
+            Navigator.pushNamed(context, '/saldo');
+            break;
+          case 4:
+            Navigator.pushNamed(context, '/inicio');
+            break;
+        }
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 24, color: isSelected ? Colors.black : Colors.grey),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: isSelected ? Colors.black : Colors.grey,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCenterNavItem() {
+    return GestureDetector(
+      onTap: () {
+        setState(() => selectedIndex = 2);
+        Navigator.pushNamed(context, '/producto');
+      },
+      child: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.12),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Icon(Icons.widgets, color: Colors.white, size: 28),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        type: BottomNavigationBarType.fixed, // que siempre se vean los labels
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey[700],
-        backgroundColor: Colors.white,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Pedidos',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 16,
+              offset: const Offset(0, -3),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        child: SafeArea(
+          top: false,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildNavItem(Icons.home, "Inicio", 0),
+              _buildNavItem(Icons.shopping_bag, "Pedidos", 1),
+              _buildCenterNavItem(),
+              _buildNavItem(Icons.people, "Clientes", 3),
+              _buildNavItem(Icons.bar_chart, "Reportes", 4),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.inventory),
-            label: 'Inventario',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Clientes'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart),
-            label: 'Reportes',
-          ),
-        ],
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
