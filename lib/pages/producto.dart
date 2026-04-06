@@ -10,6 +10,7 @@ class ProductDetailPage extends StatefulWidget {
 class _ProductDetailPageState extends State<ProductDetailPage> {
   String selectedSize = "M";
   int selectedColor = 0;
+  int selectedIndex = 1;
 
   final List<String> sizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
@@ -19,6 +20,71 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     Colors.grey,
     Colors.blue,
   ];
+
+  Widget _buildNavItem(IconData icon, String label, int index) {
+    final bool isSelected = selectedIndex == index;
+    return GestureDetector(
+      onTap: () {
+        setState(() => selectedIndex = index);
+        switch (index) {
+          case 0:
+            Navigator.pushNamed(context, '/inicio');
+            break;
+          case 1:
+            // Ya estamos en producto, no navegar
+            break;
+          case 3:
+            Navigator.pushNamed(context, '/saldo');
+            break;
+          case 4:
+            Navigator.pushNamed(context, '/inicio');
+            break;
+        }
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 24, color: isSelected ? Colors.black : Colors.grey),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: isSelected ? Colors.black : Colors.grey,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCenterNavItem() {
+    final bool isSelected = selectedIndex == 2;
+    return GestureDetector(
+      onTap: () => setState(() => selectedIndex = 2),
+      child: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.12),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Icon(
+          Icons.widgets,
+          color: Colors.white,
+          size: 28,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -193,23 +259,32 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       ),
 
       // 🔽 NAVEGACIÓN ENTRE PANTALLAS (Tabs)
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushNamed(context, "/details"); // pantalla compañero
-          } else if (index == 2) {
-            Navigator.pushNamed(context, "/profile"); // pantalla compañero
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.info), label: "Details"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag),
-            label: "Product",
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 16,
+              offset: const Offset(0, -3),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        child: SafeArea(
+          top: false,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildNavItem(Icons.home, "Inicio", 0),
+              _buildNavItem(Icons.shopping_bag, "Pedidos", 1),
+              _buildCenterNavItem(),
+              _buildNavItem(Icons.people, "Clientes", 3),
+              _buildNavItem(Icons.bar_chart, "Reportes", 4),
+            ],
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-        ],
+        ),
       ),
     );
   }
