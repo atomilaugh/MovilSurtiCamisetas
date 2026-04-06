@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:surticamisetas1/pages/producto.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MiApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class MiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
+    return MaterialApp(home: Pantalla(), debugShowCheckedModeBanner: false);
+  }
+}
+
+class Pantalla extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: ProductDetailPage());
   }
 }
